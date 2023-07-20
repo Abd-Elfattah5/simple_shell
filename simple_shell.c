@@ -1,5 +1,14 @@
 #include "main.h"
-#include <errno.h>
+/**
+ * main - Starting poing for the shell
+ *
+ * __attribute__((unused)) - annotations are used to suppress compiler warnings
+ * about these unused parameters.
+ * @argc: number of attributes
+ * @argv: attributes list
+ * @env: environment variable
+ * Return: (0) on success, else otherwise
+ */
 int main(int  __attribute__((unused)) argc,
 		char __attribute__((unused)) **argv,
 		char __attribute__((unused)) **env)
@@ -14,15 +23,16 @@ int main(int  __attribute__((unused)) argc,
 	{
 		_stat = isatty(STDIN_FILENO);
 		if (_stat == 1)
-		{
 			write(STDOUT_FILENO, "($) ", 4);
-		}
-		if ((nread = getline(&buf, &n, stdin)) == -1)
+
+		nread = getline(&buf, &n, stdin);
+		if (nread == -1)
 		{
 			free(buf);
 			return (1);
 		}
-		if ((pid = fork()) == -1)
+		pid = fork();
+		if (pid == -1)
 		{
 			free(buf);
 			return (2);
@@ -33,9 +43,8 @@ int main(int  __attribute__((unused)) argc,
 			if (execve(buf, argv, NULL) == -1)
 			{
 				if (errno == ENOENT)
-				{
 					printf("%s: 1: %s: not found\n", argv[0], buf);
-				}
+
 				free(buf);
 				return (3);
 			}
