@@ -1,8 +1,8 @@
 #include "main.h"
 #include <errno.h>
 int main(int  __attribute__((unused)) argc,
-		char __attribute__((unused))
-	       	**argv, char __attribute__((unused)) **env)
+		char __attribute__((unused)) **argv,
+		char __attribute__((unused)) **env)
 {
 	char *buf;
 	size_t n;
@@ -10,7 +10,7 @@ int main(int  __attribute__((unused)) argc,
 	int _stat;
 	pid_t pid;
 
-	while(1)
+	while (1)
 	{
 		_stat = isatty(STDIN_FILENO);
 		if (_stat == 1)
@@ -19,10 +19,12 @@ int main(int  __attribute__((unused)) argc,
 		}
 		if ((nread = getline(&buf, &n, stdin)) == -1)
 		{
+			free(buf);
 			return (1);
 		}
 		if ((pid = fork()) == -1)
 		{
+			free(buf);
 			return (2);
 		}
 		if (pid == 0)
@@ -34,6 +36,7 @@ int main(int  __attribute__((unused)) argc,
 				{
 					printf("%s: 1: %s: not found\n", argv[0], buf);
 				}
+				free(buf);
 				return (3);
 			}
 		}
@@ -42,5 +45,6 @@ int main(int  __attribute__((unused)) argc,
 			wait(NULL);
 		}
 	}
+	free(buf);
 	return (0);
 }
