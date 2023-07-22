@@ -6,4 +6,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <errno.h>
+int _execve(char **argv);
+int _parsecmd(char *cmd, char ***argv);
 #endif /* MAIN_H */
+
