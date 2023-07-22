@@ -9,18 +9,17 @@
  * @env: environment variable
  * Return: (0) on success, else otherwise
  */
-int main(int  __attribute__((unused)) argc,
-		char __attribute__((unused)) **argv,
-		char __attribute__((unused)) **env)
+int main(int  __attribute__((unused)) argc, char **argv,
+                char __attribute__((unused)) **env)
 {
-	char *buf;
-	size_t n;
-	ssize_t nread;
-	int _stat;
-	pid_t pid;
+        char *buf;
+        size_t n = 0;
+        ssize_t nread;
+        int _stat;
+        pid_t pid;
 
-	while (1)
-	{
+        while (1)
+        {
 		_stat = isatty(STDIN_FILENO);
 		if (_stat == 1)
 			write(STDOUT_FILENO, "($) ", 4);
@@ -28,32 +27,40 @@ int main(int  __attribute__((unused)) argc,
 		nread = getline(&buf, &n, stdin);
 		if (nread == -1)
 		{
-			free(buf);
+			if (buf)
+				free(buf);
+			printf("Error, getline failed\n");
 			return (1);
 		}
 		pid = fork();
 		if (pid == -1)
 		{
 			free(buf);
+			printf("Error, fork failed\n");
 			return (2);
 		}
 		if (pid == 0)
 		{
-			buf = strtok(buf, "\n");
-			if (execve(buf, argv, NULL) == -1)
+			if (_parsecmd(buf, &argv) == -1)
 			{
-				if (errno == ENOENT)
-					printf("%s: 1: %s: not found\n", argv[0], buf);
-
-				free(buf);
+				if (buf)
+					free(buf);
+				printf("Error, _parsecmd failed\n");
+				return (4);
+			}
+			if (_execve(argv) == -1)
+			{
+				if (buf)
+					free(buf);
+				printf("Error, _execve failed\n");
 				return (3);
 			}
-		}
-		else
-		{
-			wait(NULL);
-		}
+                }
+                else
+                {
+                        wait(NULL);
+                }
 	}
-	free(buf);
 	return (0);
 }
+
