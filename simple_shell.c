@@ -10,16 +10,16 @@
  * Return: (0) on success, else otherwise
  */
 int main(int  __attribute__((unused)) argc, char **argv,
-                char __attribute__((unused)) **env)
+		char __attribute__((unused)) **env)
 {
-        char *buf, *EXIT = "exit";
-        size_t n = 0;
-        ssize_t nread;
-        int _stat, i, status = 0;
-        pid_t pid;
+	char *buf, *EXIT = "exit";
+	size_t n = 0;
+	ssize_t nread;
+	int _stat, i, status = 0;
+	pid_t pid;
 
-        while (1)
-        {
+	while (1)
+	{
 		buf = NULL;
 		_stat = isatty(STDIN_FILENO);
 		if (_stat == 1)
@@ -67,9 +67,9 @@ int main(int  __attribute__((unused)) argc, char **argv,
 				printf("Error, _execve failed\n");
 				return (3);
 			}
-                }
-                else
-                {
+		}
+		else
+		{
 			if (argv)
 			{
 				for (i = 0; argv[i] != NULL; ++i)
@@ -77,7 +77,7 @@ int main(int  __attribute__((unused)) argc, char **argv,
 				free(argv);
 			}
 			wait(NULL);
-                }
+		}
 	}
 	return (0);
 }
