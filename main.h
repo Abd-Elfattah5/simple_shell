@@ -8,5 +8,7 @@
 #include <errno.h>
 int _execve(char **argv);
 int _parsecmd(char *cmd, char ***argv);
+int _strcmp(char *s1, char *s2);
+int _strlen(char *s);
 #endif /* MAIN_H */
 
