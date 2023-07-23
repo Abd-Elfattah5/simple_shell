@@ -32,6 +32,7 @@ int main(int  __attribute__((unused)) argc, char **argv,
 			printf("Error, getline failed\n");
 			return (1);
 		}
+		_pathcheck(buf, environ);
 		pid = fork();
 		if (pid == -1)
 		{
