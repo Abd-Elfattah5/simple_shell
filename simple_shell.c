@@ -12,14 +12,15 @@
 int main(int  __attribute__((unused)) argc, char **argv,
                 char __attribute__((unused)) **env)
 {
-        char *buf;
+        char *buf, *EXIT = "exit";
         size_t n = 0;
         ssize_t nread;
-        int _stat;
+        int _stat, i, status = 0;
         pid_t pid;
 
         while (1)
         {
+		buf = NULL;
 		_stat = isatty(STDIN_FILENO);
 		if (_stat == 1)
 			write(STDOUT_FILENO, "($) ", 4);
@@ -32,33 +33,50 @@ int main(int  __attribute__((unused)) argc, char **argv,
 			printf("Error, getline failed\n");
 			return (1);
 		}
+		if (_parsecmd(buf, &argv) == -1)
+		{
+			if (buf)
+				free(buf);
+			printf("Error, _parsecmd failed\n");
+			return (4);
+		}
+		if (buf)
+			free(buf);
+		printf("%s - %s\n", argv[0], EXIT);
+		if (_strcmp(argv[0], EXIT) == 0)
+		{
+			printf("Exiting the shell...\n");
+			if (argv[1])
+				status = atoi(argv[1]);
+			for (i = 0; argv[i] != NULL; ++i)
+				free(argv[i]);
+			if (argv)
+				free(argv);
+			exit(status);
+		}
 		pid = fork();
 		if (pid == -1)
 		{
-			free(buf);
 			printf("Error, fork failed\n");
 			return (2);
 		}
 		if (pid == 0)
 		{
-			if (_parsecmd(buf, &argv) == -1)
-			{
-				if (buf)
-					free(buf);
-				printf("Error, _parsecmd failed\n");
-				return (4);
-			}
 			if (_execve(argv) == -1)
 			{
-				if (buf)
-					free(buf);
 				printf("Error, _execve failed\n");
 				return (3);
 			}
                 }
                 else
                 {
-                        wait(NULL);
+			if (argv)
+			{
+				for (i = 0; argv[i] != NULL; ++i)
+					free(argv[i]);
+				free(argv);
+			}
+			wait(NULL);
                 }
 	}
 	return (0);
