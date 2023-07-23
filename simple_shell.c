@@ -47,7 +47,7 @@ int main(int  __attribute__((unused)) argc, char **argv,
 		{
 			printf("Exiting the shell...\n");
 			if (argv[1])
-				status = atoi(argv[1]);
+				status = _atoi(argv[1]);
 			for (i = 0; argv[i] != NULL; ++i)
 				free(argv[i]);
 			if (argv)
