@@ -20,11 +20,9 @@ int main(int __attribute__((unused)) argc, char **argv)
 	{
 		nread = _getcmd(&data.input);
 		if (nread == -1)
-			_perror("\n", &data, 1);
+			_perror(NULL, &data, 0);
 		else if (nread == 0)
 			continue;
-		if (_getcmd(&data.input) == -1)
-			_perror(NULL, &data, 0);
 		if (_parsecmd(&data) == -1)
 			_perror("Error, _parsecmd failed\n", &data, 2);
 		builtin = _is_builtin(data.args);
