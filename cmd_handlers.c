@@ -22,6 +22,7 @@ int _getcmd(char **buf)
 	{
 		free(*buf);
 		*buf = NULL;
+		return (-1);
 	}
 	if (_strlen(*buf) <= 1)
 	{

@@ -20,7 +20,7 @@ int main(int __attribute__((unused)) argc, char **argv)
 	{
 		nread = _getcmd(&data.input);
 		if (nread == -1)
-			_perror("Error, _gatcmd failed\n", &data, 1);
+			_perror("\n", &data, 1);
 		else if (nread == 0)
 			continue;
 		if (_getcmd(&data.input) == -1)
