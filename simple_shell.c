@@ -24,7 +24,6 @@ int main(int __attribute__((unused)) argc, char **argv)
 		builtin = _is_builtin(data.args);
 		if (builtin)
 		{
-			printf("Found builtin\n");
 			builtin(&data);
 			free_in_buffers(&data);
 			continue;
