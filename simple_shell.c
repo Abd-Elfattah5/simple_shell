@@ -19,10 +19,8 @@ int main(int __attribute__((unused)) argc, char **argv)
 	{
 		if (_getcmd(&data.input) == -1)
 			_perror("Error, _gatcmd failed\n", &data, 1);
-
 		if (_parsecmd(&data) == -1)
 			_perror("Error, _parsecmd failed\n", &data, 2);
-
 		builtin = _is_builtin(data.args);
 		if (builtin)
 		{
@@ -31,11 +29,17 @@ int main(int __attribute__((unused)) argc, char **argv)
 			free_in_buffers(&data);
 			continue;
 		}
-		/*Check PATH*/
+		if (!_pathcheck(&data))
+		{
+
+			printf("%s: 1: %s: command not found\n",
+					argv[0], data.input);
+			free_in_buffers(&data);
+			continue;
+		}
 		pid = fork();
 		if (pid == -1)
 			_perror("Error, fork failed\n", &data, 3);
-
 		if (pid == 0)
 		{
 			if (_execve(&data) == -1)

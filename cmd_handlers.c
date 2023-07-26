@@ -84,15 +84,14 @@ int _parsecmd(shell_data *data)
  */
 int _execve(shell_data *data)
 {
-	char **args = data->args, **argv = data->av,
-	     *buf = data->input;
+	char **args = data->args;
 
 	if (execve(args[0], args, NULL) == -1)
 	{
+
+		printf("%s: 1: %s: command not found\n",
+				data->av[0], data->input);
 		printf("Error, execve failed\n");
-		if (errno == ENOENT)
-			printf("%s: 1: %s: command not found\n",
-					argv[0], buf);
 		return (-1);
 	}
 	return (0);

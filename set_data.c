@@ -1,6 +1,11 @@
 #include "main.h"
-
-void set_data(shell_data* data, char **av)
+/**
+ * set_data - set shell data
+ * Return: non
+ * @data: the struct data to be filled
+ * @av: the array of strings to be copied
+*/
+void set_data(shell_data *data, char **av)
 {
 	unsigned int i;
 
@@ -10,8 +15,8 @@ void set_data(shell_data* data, char **av)
 	data->status = 0;
 	data->argc = 0;
 
-	for (i = 0; environ[i] != NULL; ++i);
-
+	for (i = 0; environ[i] != NULL; ++i)
+		;
 	data->_environ = malloc(sizeof(char *) * (i + 1));
 	if (data->_environ == NULL)
 	{
