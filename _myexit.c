@@ -8,7 +8,7 @@
 void _myexit(shell_data *data)
 {
 	char ***argv = &data->args;
-	int status = 0;
+	int status = 2;
 
 	if ((*argv)[1])
 		status = _atoi((*argv)[1]);
