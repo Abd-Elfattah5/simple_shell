@@ -31,7 +31,6 @@ int _pathcheck(shell_data *data)
 		return (0);
 	if (parsePATH(pathdup, &pathtok))
 	{
-<<<<<<< HEAD
 		if (_concatPATH(pathtok, &path, cmd) == 0)
 		{
 			printf("command not found\n");
@@ -39,13 +38,11 @@ int _pathcheck(shell_data *data)
 			return (0);
 		}
 		printf("path: %s\n", path);
-=======
 		if (!_concatPATH(pathtok, &path, cmd))
 		{
 			_free_path(&pathtok, &pathdup);
 			return (0);
 		}
->>>>>>> cb523dd3fe2bd19a4e42bd79f719a38d70906f56
 	}
 	else
 	{
