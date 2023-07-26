@@ -75,6 +75,6 @@ int _pathcheck(shell_data *data);
 int parsePATH(char *path, char ***pathtok);
 int _concatPATH(char **pathtok, char **concated, char *cmd);
 int _strcat(char *s1, char *s2, char **concated);
-
+void _free_path(char ***pathtok, char **pathdup);
 #endif /* MAIN_H */
 

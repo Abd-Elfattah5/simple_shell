@@ -30,23 +30,41 @@ int _pathcheck(shell_data *data)
 	if (pathdup == NULL)
 		return (0);
 	if (parsePATH(pathdup, &pathtok))
-		_concatPATH(pathtok, &path, cmd);
+	{
+		if (!_concatPATH(pathtok, &path, cmd))
+		{
+			_free_path(&pathtok, &pathdup);
+			return (0);
+		}
+	}
 	else
 	{
 		free(pathdup);
 		return (0);
 	}
-	i = 0;
-
-	while (pathtok[i] != NULL)
-		free(pathtok[i++]);
-	free(pathtok[i]);
-	free(pathtok);
-	free(pathdup);
+	_free_path(&pathtok, &pathdup);
 	free(data->args[0]);
 	data->args[0] = path;
 
 	return (1);
+}
+
+/**
+ * _free_path - function to free all the arays reserved
+ * Return: none
+ * @pathtok: the array holding the path directories
+ * @pathdup: the PATH var duplicate
+*/
+
+void _free_path(char ***pathtok, char **pathdup)
+{
+	int i = 0;
+
+	while ((*pathtok)[i] != NULL)
+		free((*pathtok)[i++]);
+	free((*pathtok)[i]);
+	free(*pathtok);
+	free(*pathdup);
 }
 
 /**
@@ -115,16 +133,19 @@ int _concatPATH(char **pathtok, char **concated, char *cmd)
 	do {
 		getcwd(wd, 256);
 		if (!stat(cmd, &buffer))
+		{
 			if (!_strcat(wd, cmd, concated))
 			{
 				perror("couldn't concat the strings");
 				return (0);
 			}
-
+			chdir(cwd);
+			return (1);
+		}
 		chdir(pathtok[i]);
 	} while (pathtok[++i] != NULL);
 	chdir(cwd);
-	return (1);
+	return (0);
 }
 /**
  * _strcat - function to concat 2 strings with (/) between them
