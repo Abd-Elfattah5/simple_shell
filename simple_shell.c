@@ -13,12 +13,16 @@ int main(int __attribute__((unused)) argc, char **argv)
 	shell_data data;
 	pid_t pid;
 	void (*builtin)(shell_data *);
+	int nread;
 
 	set_data(&data, argv);
 	while (1)
 	{
-		if (_getcmd(&data.input) == -1)
+		nread = _getcmd(&data.input);
+		if (nread == -1)
 			_perror("Error, _gatcmd failed\n", &data, 1);
+		else if (nread == 0)
+			continue;
 		if (_parsecmd(&data) == -1)
 			_perror("Error, _parsecmd failed\n", &data, 2);
 		builtin = _is_builtin(data.args);

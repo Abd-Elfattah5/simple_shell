@@ -23,6 +23,12 @@ int _getcmd(char **buf)
 		free(*buf);
 		*buf = NULL;
 	}
+	if (_strlen(*buf) <= 1)
+	{
+		free(*buf);
+		*buf = NULL;
+		return (0);
+	}
 	return (nread);
 }
 
