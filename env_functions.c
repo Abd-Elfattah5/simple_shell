@@ -1,5 +1,37 @@
 #include "main.h"
 
+/**
+ * is_found - check if the current variable name = name
+ * @envp: environ
+ * @name: variable name
+ * @new_var: new variabel
+ * @overwrite: overwrite flag
+ * Return: (1) on success, (0) on failure
+ */
+int is_found(char ***envp, char *name, char **new_var, int overwrite, int i)
+{
+	if (_strcmp2((*envp)[i], name) == 0 &&
+			((*envp)[i])[_strlen(name)] == '=')
+	{
+		if (!overwrite)
+		{
+			free(*new_var);
+			return (1);
+		}
+		free((*envp)[i]);
+		(*envp)[i] = *new_var;
+		environ = *envp;
+		*new_var = NULL;
+		return (1);
+	}
+	return (0);
+}
+
+/**
+ * _unsetenv - unset variable in environ
+ *
+ * @data: shell_data
+ */
 void _unsetenv(shell_data *data)
 {
 	char ***envp = &data->_environ, **new_env = NULL, *name = NULL,
@@ -8,18 +40,18 @@ void _unsetenv(shell_data *data)
 
 	if (data->argc != 2)
 	{
-		printf("Error, invalid number of arguments\n");
+		perror("Error, invalid number of arguments");
 		return;
 	}
 	name = av[1];
-	for (i = 0; (*envp)[i] != NULL; ++i);
-	printf("Before search\n");
+	for (i = 0; (*envp)[i] != NULL; ++i)
+		;
 	for (i = 0, j = 0; (*envp)[i] != NULL; ++i)
 	{
-		if (_strcmp2((*envp)[i], name) == 0
-				&& ((*envp)[i])[_strlen(name)] == '=')
+		if (_strcmp2((*envp)[i], name) == 0 &&
+				((*envp)[i])[_strlen(name)] == '=')
 		{
-			printf("Found %s\n", (*envp)[i]);
+			continue;
 		}
 		else
 		{
@@ -27,21 +59,25 @@ void _unsetenv(shell_data *data)
 				new_env = malloc(sizeof(char *) * 1);
 			else
 				new_env = realloc(new_env,
-						sizeof(char *) * (j + 1));
-			
+						  sizeof(char *) * (j + 1));
+			if (new_env == NULL)
+				perror("Error allocating memory");
 			new_env[j++] = strdup((*envp)[i]);
 		}
 	}
 	free_env(data);
 	*envp = NULL;
-	new_env = realloc(new_env, sizeof(char*) * (j + 1));
+	new_env = realloc(new_env, sizeof(char *) * (j + 1));
 	new_env[j] = NULL;
 	*envp = new_env;
 	environ = *envp;
-	printf("unset DONE\n");
-	printf("after unset: %s\n", getenv(name));
 }
 
+/**
+ * _setenv - set variable in environ
+ *
+ * @data: shell_data
+ */
 void _setenv(shell_data *data)
 {
 	char **av = data->args, *new_var = NULL, ***envp = &data->_environ,
@@ -50,54 +86,33 @@ void _setenv(shell_data *data)
 
 	if (data->argc != 3)
 	{
-		printf("Error, invalid number of arguments\n");
+		perror("Error, invalid number of arguments");
 		return;
 	}
-
 	name = av[1];
 	value = av[2];
-	if (name == NULL || name[0] == '\0')
-		return;
-
 	new_var = _concat_all(name, value);
 	if (new_var == NULL)
 	{
-		printf("Error, _concat_all failed\n");
+		perror("Error _concat_all failed");
 		return;
 	}
-	printf("new_var: %s\n", new_var);
 	for (i = 0; (*envp)[i] != NULL; ++i)
 	{
-		if (_strcmp2((*envp)[i], name) == 0
-					&& ((*envp)[i])[_strlen(name)] == '=')
-		{
-			printf("Found %s\n", (*envp)[i]);
-			if (!overwrite)
-			{
-				free(new_var);
-				return;
-			}
-			free((*envp)[i]);
-			(*envp)[i] = new_var;
-			environ = *envp;
-			new_var = NULL;
-			printf("after edit: %s\n", (*envp)[i]);
-			printf("getenv: %s\n", getenv(name));
+		if (is_found(envp, name, &new_var, overwrite, i))
 			return;
-		}
 	}
-	printf("NOT FOUND\n");
-	for (i = 0; (*envp)[i] != NULL; ++i);
+	for (i = 0; (*envp)[i] != NULL; ++i)
+		;
 	*envp = (char **)realloc(*envp, sizeof(char *) * (i + 2));
 	if (*envp == NULL)
 	{
-		printf("Error, malloc failed\n");
+		perror("Error allocating memory");
 		return;
 	}
 	(*envp)[i++] = new_var;
 	(*envp)[i] = NULL;
 	environ = *envp;
 	new_var = NULL;
-	printf("after _setenv: %s=%s\n", name, getenv(name));
-	return;
 }
+

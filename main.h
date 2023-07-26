@@ -55,11 +55,13 @@ int _strcmp(const char *s1, const char *s2);
 int _strcmp2(const char *s1, const char *s2);
 int _strlen(const char *);
 int _atoi(char *);
+char *_strchr(char *s, char c);
 
 /* env_functions.c */
 void _setenv(shell_data *);
 void _unsetenv(shell_data *);
 char *_concat_all(const char *s1, const char *s2);
+int is_found(char ***envp, char *name, char **new_var, int overwrite, int i);
 
 void _perror(char *s, shell_data *data, int status);
 

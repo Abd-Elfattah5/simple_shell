@@ -1,5 +1,9 @@
 #include "main.h"
 
+/**
+ * free_in_buffers - free the input buffers
+ * @data: shell_data
+ */
 void free_in_buffers(shell_data *data)
 {
 	char **input = &data->input, ***args = &data->args;
@@ -20,6 +24,10 @@ void free_in_buffers(shell_data *data)
 	}
 }
 
+/**
+ * free_env - free environ variable
+ * @data: shell_data
+ */
 void free_env(shell_data *data)
 {
 	char ***env = &data->_environ;
@@ -37,6 +45,10 @@ void free_env(shell_data *data)
 	}
 }
 
+/**
+ * free_shell_data - free all shell data
+ * @data: shell_data
+ */
 void free_shell_data(shell_data *data)
 {
 	free_in_buffers(data);
