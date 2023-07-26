@@ -6,6 +6,7 @@
  * @name: variable name
  * @new_var: new variabel
  * @overwrite: overwrite flag
+ * @i: the place of env
  * Return: (1) on success, (0) on failure
  */
 int is_found(char ***envp, char *name, char **new_var, int overwrite, int i)

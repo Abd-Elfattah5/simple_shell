@@ -33,8 +33,7 @@ int _pathcheck(shell_data *data)
 		_concatPATH(pathtok, &path, cmd);
 	else
 	{
-		if (pathdup)
-			free(pathdup);
+		free(pathdup);
 		return (0);
 	}
 	i = 0;

@@ -31,9 +31,7 @@ int main(int __attribute__((unused)) argc, char **argv)
 		}
 		if (!_pathcheck(&data))
 		{
-
-			printf("%s: 1: %s: command not found\n",
-					argv[0], data.input);
+			printf("%s: 1: %s: command not found\n", argv[0], data.input);
 			free_in_buffers(&data);
 			continue;
 		}
