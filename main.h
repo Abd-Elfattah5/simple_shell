@@ -17,5 +17,6 @@ int _strcmp(char *s1, char *s2);
 int _strlen(char *s);
 int _strcat(char *s1, char *s2, char **concated);
 int _concatPATH(char **pathtok, char **concated, char *cmd);
+int _atoi(char *s);
 #endif /* MAIN_H */
 
