@@ -18,7 +18,7 @@ int main(int __attribute__((unused)) argc, char **argv)
 	while (1)
 	{
 		if (_getcmd(&data.input) == -1)
-			_perror("Error, _gatcmd failed\n", &data, 1);
+			_perror(NULL, &data, 0);
 		if (_parsecmd(&data) == -1)
 			_perror("Error, _parsecmd failed\n", &data, 2);
 		builtin = _is_builtin(data.args);
