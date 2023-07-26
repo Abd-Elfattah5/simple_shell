@@ -67,5 +67,12 @@ void _perror(char *s, shell_data *data, int status);
 void free_in_buffers(shell_data *);
 void free_env(shell_data *);
 void free_shell_data(shell_data *);
+
+/* _path.c */
+int _pathcheck(shell_data *data);
+int parsePATH(char *path, char ***pathtok);
+int _concatPATH(char **pathtok, char **concated, char *cmd);
+int _strcat(char *s1, char *s2, char **concated);
+
 #endif /* MAIN_H */
 
