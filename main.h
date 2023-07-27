@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <stddef.h>
+#include <fcntl.h>
 extern char **environ;
 
 /**
@@ -18,6 +19,8 @@ extern char **environ;
  * @status: last status of the shell
  * @argc: lines counter
  * @_environ: environment variable
+ * @fd: file descriptor
+ * @prev_wd: the previous working directory
  */
 typedef struct info
 {
@@ -27,8 +30,8 @@ typedef struct info
 	int status;
 	int argc;
 	char **_environ;
-	char perv_wd[1024];
-
+	char prev_wd[1024];
+	FILE *fd;
 } shell_data;
 
 /**
@@ -48,9 +51,10 @@ void (*_is_builtin(char **av))(shell_data *);
 void _env(shell_data *data);
 void _cd(shell_data *data);
 /* cmd_handlers.c */
-int _getcmd(char **);
-int _execve(shell_data *);
+int _getcmd(shell_data *);
+void _execve(shell_data *);
 int _parsecmd(shell_data *);
+int spaces_only(char *);
 
 /* string_functions.c */
 int _strcmp(const char *s1, const char *s2);
@@ -71,16 +75,20 @@ void _perror(char *s, shell_data *data, int status);
 void free_in_buffers(shell_data *);
 void free_env(shell_data *);
 void free_shell_data(shell_data *);
-/* _cd.c */
 
+/* _cd.c */
 void cd_no_arg(shell_data *data);
 void cd_hiffen(shell_data *data);
 void cd_arg(shell_data *data);
+
 /* _path.c */
 int _pathcheck(shell_data *data);
 int parsePATH(char *path, char ***pathtok);
 int _concatPATH(char **pathtok, char **concated, char *cmd);
 int _strcat(char *s1, char *s2, char **concated);
 void _free_path(char ***pathtok, char **pathdup);
+
+/* _path2.c */
+int is_full_path(char *);
 #endif /* MAIN_H */
 

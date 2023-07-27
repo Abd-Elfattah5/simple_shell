@@ -53,4 +53,6 @@ void free_shell_data(shell_data *data)
 {
 	free_in_buffers(data);
 	free_env(data);
+	if (data->fd != NULL && data->fd != stdin)
+		fclose(data->fd);
 }

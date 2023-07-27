@@ -9,14 +9,10 @@ int _pathcheck(shell_data *data)
 {
 	char *path_env, *pathdup, **pathtok, *path,
 	     *cmd = data->input, **env = data->_environ;
-	int i = 0, j = 0;
+	int i = 0;
 
-	while (data->args[0][j] != '\0')
-	{
-		if (data->args[0][j] == '/')
-			return (1);
-		j++;
-	}
+	if (is_full_path(data->args[0]))
+		return (1);
 	while (env[i])
 	{
 		if (_strlen(env[i]) > 3)
@@ -26,7 +22,6 @@ int _pathcheck(shell_data *data)
 	}
 	path_env = env[i];
 	pathdup = strdup(path_env);
-
 	if (pathdup == NULL)
 		return (0);
 	if (parsePATH(pathdup, &pathtok))

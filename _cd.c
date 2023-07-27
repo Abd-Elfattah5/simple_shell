@@ -41,7 +41,7 @@ void cd_no_arg(shell_data *data)
 	token = strtok(env[i], "=");
 	token = strtok(NULL, "=");
 
-	getcwd(data->perv_wd, 1024);
+	getcwd(data->prev_wd, 1024);
 	chdir(token);
 }
 
@@ -54,17 +54,17 @@ void cd_no_arg(shell_data *data)
 void cd_hiffen(shell_data *data)
 {
 	char *token;
-	token = strdup(data->perv_wd);
+
+	token = strdup(data->prev_wd);
 
 	if (token == NULL)
 	{
 		perror("strdup");
 		return;
 	}
-	getcwd(data->perv_wd, 1024);
+	getcwd(data->prev_wd, 1024);
 	chdir(token);
 	free(token);
-	
 }
 
 /**
@@ -77,20 +77,21 @@ void cd_arg(shell_data *data)
 {
 	char *token;
 	int i;
-	token = strdup(data->perv_wd);
+
+	token = strdup(data->prev_wd);
 
 	if (token == NULL)
 	{
 		perror("strdup");
 		return;
 	}
-	getcwd(data->perv_wd, 1024);
+	getcwd(data->prev_wd, 1024);
 	if (chdir(data->args[1]) == -1)
 	{
-		dprintf(STDERR_FILENO, "%s: 1: cd: can't cd to %s\n", 
+		dprintf(STDERR_FILENO, "%s: 1: cd: can't cd to %s\n",
 				data->args[0], data->args[1]);
 		for (i = 0; token[i] != '\0'; i++)
-			(data->perv_wd)[i] = token[i];
+			(data->prev_wd)[i] = token[i];
 		free(token);
 		return;
 	}

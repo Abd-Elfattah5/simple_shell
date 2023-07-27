@@ -3,31 +3,47 @@
 /**
  * _getcmd - prompt the user for a command
  *
- * @buf: buffer to store the command line
+ * @data: shell_data
  * Return: (-1) on failure, else otherwise
  */
-int _getcmd(char **buf)
+int _getcmd(shell_data *data)
 {
 	int _stat = 0;
 	size_t n = 0;
 	ssize_t nread;
+	char **buf = &data->input;
 
-	_stat = isatty(STDIN_FILENO);
-	if (_stat == 1)
-		write(STDOUT_FILENO, "($) ", 4);
-
+	if (data->av[1] != NULL)
+	{
+		if (data->fd == NULL)
+		{
+			data->fd = fopen(data->av[1], "r");
+			if (data->fd == NULL)
+			{
+				dprintf(STDERR_FILENO, "%s: 0: Can't open %s\n",
+						data->av[0], data->av[1]);
+				_perror(NULL, data, 127);
+			}
+		}
+	}
+	else
+	{
+		data->fd = stdin;
+		_stat = isatty(STDIN_FILENO);
+		if (_stat == 1)
+			write(STDOUT_FILENO, "($) ", 4);
+	}
 	*buf = NULL;
-	nread = getline(buf, &n, stdin);
+	nread = getline(buf, &n, data->fd);
 	if (nread == -1 && *buf)
 	{
 		free(*buf);
 		*buf = NULL;
-		return (-1);
+		_perror(NULL, data, 0);
 	}
-	if (_strlen(*buf) <= 1)
+	if (spaces_only(*buf))
 	{
 		free(*buf);
-		*buf = NULL;
 		return (0);
 	}
 	return (nread);
@@ -87,20 +103,33 @@ int _parsecmd(shell_data *data)
  * _execve - execute the command
  *
  * @data: shell_data
- * Return: (-1) on failure, else otherwise
+ * Return: void
  */
-int _execve(shell_data *data)
+void _execve(shell_data *data)
 {
 	char **args = data->args;
 
 	if (execve(args[0], args, NULL) == -1)
 	{
-
 		printf("%s: 1: %s: command not found\n",
 				data->av[0], data->input);
-		printf("Error, execve failed\n");
-		return (-1);
+		_perror("execve", data, EXIT_FAILURE);
 	}
-	return (0);
 }
 
+/**
+ * spaces_only - check if the string is spaces only
+ * @s: string to be checke
+ * Return: (1) on if all spaces - (0) otherwise
+ */
+int spaces_only(char *s)
+{
+	int i;
+
+	for (i = 0; s[i] != '\n'; ++i)
+	{
+		if (s[i] != ' ')
+			return (0);
+	}
+	return (1);
+}
