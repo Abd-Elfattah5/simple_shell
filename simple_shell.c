@@ -13,7 +13,7 @@ int main(int __attribute__((unused)) argc, char **argv)
 	shell_data data;
 	pid_t pid;
 	void (*builtin)(shell_data *);
-	int nread;
+	int nread, status;
 
 	set_data(&data, argv);
 	while (1)
@@ -49,7 +49,8 @@ int main(int __attribute__((unused)) argc, char **argv)
 		else
 		{
 			free_in_buffers(&data);
-			wait(NULL);
+			wait(&status);
+			data.status = WEXITSTATUS(status);
 		}
 	}
 	return (0);
