@@ -44,7 +44,7 @@ typedef struct builtin_s
 void set_data(shell_data *d, char **av);
 void _myexit(shell_data *);
 void (*_is_builtin(char **av))(shell_data *);
-
+void _env(shell_data *data);
 /* cmd_handlers.c */
 int _getcmd(char **);
 int _execve(shell_data *);

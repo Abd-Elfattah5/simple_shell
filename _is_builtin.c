@@ -13,7 +13,9 @@ void (*_is_builtin(char **av))(shell_data * data)
 		{"exit", _myexit},
 		{"setenv", _setenv},
 		{"unsetenv", _unsetenv},
-		{NULL, NULL}};
+		{"env", _env},
+		{NULL, NULL
+		}};
 
 	for (i = 0; F[i].name != NULL; ++i)
 	{
