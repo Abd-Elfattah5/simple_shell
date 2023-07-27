@@ -3,14 +3,15 @@
 /**
  * _getcmd - prompt the user for a command
  *
- * @buf: buffer to store the command line
+ * @data: shell_data
  * Return: (-1) on failure, else otherwise
  */
-int _getcmd(char **buf)
+int _getcmd(shell_data *data)
 {
 	int _stat = 0;
 	size_t n = 0;
 	ssize_t nread;
+	char **buf = &data->input;
 
 	_stat = isatty(STDIN_FILENO);
 	if (_stat == 1)
@@ -22,7 +23,7 @@ int _getcmd(char **buf)
 	{
 		free(*buf);
 		*buf = NULL;
-		return (-1);
+		_perror(NULL, data, 0);
 	}
 	if (_strlen(*buf) <= 1)
 	{
@@ -87,20 +88,17 @@ int _parsecmd(shell_data *data)
  * _execve - execute the command
  *
  * @data: shell_data
- * Return: (-1) on failure, else otherwise
+ * Return: void
  */
-int _execve(shell_data *data)
+void _execve(shell_data *data)
 {
 	char **args = data->args;
 
 	if (execve(args[0], args, NULL) == -1)
 	{
-
 		printf("%s: 1: %s: command not found\n",
 				data->av[0], data->input);
-		printf("Error, execve failed\n");
-		return (-1);
+		_perror("execve", data, EXIT_FAILURE);
 	}
-	return (0);
 }
 

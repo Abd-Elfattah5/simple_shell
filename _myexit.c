@@ -16,7 +16,8 @@ void _myexit(shell_data *data)
 		{
 			if (data->args[1][i] < '0' || data->args[1][i] > '9')
 			{
-				dprintf(STDERR_FILENO, "%s: 1: exit: Illegal number: %s\n", data->av[0], data->args[1]);
+				dprintf(STDERR_FILENO, "%s: 1: exit: Illegal number: %s\n",
+						data->av[0], data->args[1]);
 				status = 2;
 				is_string = 1;
 				break;
@@ -27,7 +28,8 @@ void _myexit(shell_data *data)
 	}
 	if (status < 0)
 	{
-		dprintf(STDERR_FILENO, "%s: 1: exit: Illegal number: %i\n", data->av[0], status);
+		dprintf(STDERR_FILENO, "%s: 1: exit: Illegal number: %i\n",
+				data->av[0], status);
 		status = 2;
 	}
 	free_shell_data(data);

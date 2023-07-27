@@ -46,8 +46,8 @@ void _myexit(shell_data *);
 void (*_is_builtin(char **av))(shell_data *);
 void _env(shell_data *data);
 /* cmd_handlers.c */
-int _getcmd(char **);
-int _execve(shell_data *);
+int _getcmd(shell_data *);
+void _execve(shell_data *);
 int _parsecmd(shell_data *);
 
 /* string_functions.c */
@@ -76,5 +76,8 @@ int parsePATH(char *path, char ***pathtok);
 int _concatPATH(char **pathtok, char **concated, char *cmd);
 int _strcat(char *s1, char *s2, char **concated);
 void _free_path(char ***pathtok, char **pathdup);
+
+/* _path2.c */
+int is_full_path(char *);
 #endif /* MAIN_H */
 

@@ -18,10 +18,7 @@ int main(int __attribute__((unused)) argc, char **argv)
 	set_data(&data, argv);
 	while (1)
 	{
-		nread = _getcmd(&data.input);
-		if (nread == -1)
-			_perror(NULL, &data, 0);
-		else if (nread == 0)
+		if (_getcmd(&data) == 0)
 			continue;
 		if (_parsecmd(&data) == -1)
 			_perror("Error, _parsecmd failed\n", &data, 2);
@@ -42,10 +39,7 @@ int main(int __attribute__((unused)) argc, char **argv)
 		if (pid == -1)
 			_perror("Error, fork failed\n", &data, 3);
 		if (pid == 0)
-		{
-			if (_execve(&data) == -1)
-				_perror("Error, _execve failed\n", &data, 4);
-		}
+			_execve(&data)
 		else
 		{
 			free_in_buffers(&data);
