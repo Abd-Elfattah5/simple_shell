@@ -25,10 +25,9 @@ int _getcmd(shell_data *data)
 		*buf = NULL;
 		_perror(NULL, data, 0);
 	}
-	if (_strlen(*buf) <= 1)
+	if (spaces_only(*buf))
 	{
 		free(*buf);
-		*buf = NULL;
 		return (0);
 	}
 	return (nread);
@@ -102,3 +101,19 @@ void _execve(shell_data *data)
 	}
 }
 
+/**
+ * spaces_only - check if the string is spaces only
+ * @s: string to be checke
+ * Return: (1) on if all spaces - (0) otherwise
+ */
+int spaces_only(char *s)
+{
+	int i;
+
+	for (i = 0; s[i] != '\n'; ++i)
+	{
+		if (s[i] != ' ')
+			return (0);
+	}
+	return (1);
+}
