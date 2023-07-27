@@ -7,6 +7,8 @@
  */
 int is_full_path(char *s)
 {
+	int j = 0;
+
 	while (s[j] != '\0')
 	{
 		if (s[j] == '/')

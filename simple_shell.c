@@ -13,7 +13,7 @@ int main(int __attribute__((unused)) argc, char **argv)
 	shell_data data;
 	pid_t pid;
 	void (*builtin)(shell_data *);
-	int nread, status;
+	int status;
 
 	set_data(&data, argv);
 	while (1)
@@ -39,7 +39,7 @@ int main(int __attribute__((unused)) argc, char **argv)
 		if (pid == -1)
 			_perror("Error, fork failed\n", &data, 3);
 		if (pid == 0)
-			_execve(&data)
+			_execve(&data);
 		else
 		{
 			free_in_buffers(&data);
