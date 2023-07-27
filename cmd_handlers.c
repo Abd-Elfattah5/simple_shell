@@ -20,7 +20,7 @@ int _getcmd(shell_data *data)
 			data->fd = fopen(data->av[1], "r");
 			if (data->fd == NULL)
 			{
-				dprintf(STDERR_FILENO,"%s: 0: Can't open %s\n",
+				dprintf(STDERR_FILENO, "%s: 0: Can't open %s\n",
 						data->av[0], data->av[1]);
 				_perror(NULL, data, 127);
 			}

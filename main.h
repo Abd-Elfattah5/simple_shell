@@ -19,6 +19,7 @@ extern char **environ;
  * @status: last status of the shell
  * @argc: lines counter
  * @_environ: environment variable
+ * @fd: file descriptor
  */
 typedef struct info
 {
