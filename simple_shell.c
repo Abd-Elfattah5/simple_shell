@@ -31,7 +31,9 @@ int main(int __attribute__((unused)) argc, char **argv)
 		}
 		if (!_pathcheck(&data))
 		{
-			printf("%s: 1: %s: command not found\n", argv[0], data.input);
+			dprintf(STDERR_FILENO, "%s: 1: %s: not found\n",
+					argv[0], data.input);
+			data.status = 127;
 			free_in_buffers(&data);
 			continue;
 		}

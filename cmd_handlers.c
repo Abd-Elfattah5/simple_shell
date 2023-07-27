@@ -39,7 +39,7 @@ int _getcmd(shell_data *data)
 	{
 		free(*buf);
 		*buf = NULL;
-		_perror(NULL, data, 0);
+		_perror(NULL, data, data->status);
 	}
 	if (spaces_only(*buf))
 	{
