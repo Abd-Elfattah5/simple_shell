@@ -8,7 +8,7 @@
 void _myexit(shell_data *data)
 {
 	char ***argv = &data->args;
-	int status = data->status, i;
+	int status = data->status, i, is_string = 0;
 
 	if ((*argv)[1])
 	{
@@ -18,10 +18,12 @@ void _myexit(shell_data *data)
 			{
 				dprintf(STDERR_FILENO, "%s: 1: exit: Illegal number: %s\n", data->av[0], data->args[1]);
 				status = 2;
-				exit(status);
+				is_string = 1;
+				break;
 			}
 		}
-		status = _atoi((*argv)[1]);
+		if (!is_string)
+			status = _atoi((*argv)[1]);
 	}
 	if (status < 0)
 	{
