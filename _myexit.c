@@ -10,20 +10,18 @@ void _myexit(shell_data *data)
 	char ***argv = &data->args;
 	int status = data->status, i, is_string = 0;
 
-	for (i = 0; data->args[1][i] != '\0'; ++i)
+	if ((*argv)[1])
 	{
-		if (data->args[1][i] < '0' || data->args[1][i] > '9')
+		for (i = 0; data->args[1][i] != '\0'; ++i)
 		{
-			dprintf(STDERR_FILENO, "%s: 1: exit: Illegal number: %s\n", data->av[0], data->args[1]);
-			status = 2;
-			is_string = 1;
-			break;
+			if (data->args[1][i] < '0' || data->args[1][i] > '9')
+			{
+				dprintf(STDERR_FILENO, "%s: 1: exit: Illegal number: %s\n", data->av[0], data->args[1]);
+				status = 2;
+				exti(status);
+			}
 		}
-	}
-	if (!is_string)
-	{
-		if ((*argv)[1])
-			status = _atoi((*argv)[1]);
+		status = _atoi((*argv)[1]);
 	}
 	if (status < 0)
 	{
