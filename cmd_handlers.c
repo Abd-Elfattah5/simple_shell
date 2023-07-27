@@ -13,12 +13,28 @@ int _getcmd(shell_data *data)
 	ssize_t nread;
 	char **buf = &data->input;
 
-	_stat = isatty(STDIN_FILENO);
-	if (_stat == 1)
-		write(STDOUT_FILENO, "($) ", 4);
-
+	if (data->av[1] != NULL)
+	{
+		if (data->fd == NULL)
+		{
+			data->fd = fopen(data->av[1], "r");
+			if (data->fd == NULL)
+			{
+				dprintf(STDERR_FILENO,"%s: 0: Can't open %s\n",
+						data->av[0], data->av[1]);
+				_perror(NULL, data, 127);
+			}
+		}
+	}
+	else
+	{
+		data->fd = stdin;
+		_stat = isatty(STDIN_FILENO);
+		if (_stat == 1)
+			write(STDOUT_FILENO, "($) ", 4);
+	}
 	*buf = NULL;
-	nread = getline(buf, &n, stdin);
+	nread = getline(buf, &n, data->fd);
 	if (nread == -1 && *buf)
 	{
 		free(*buf);

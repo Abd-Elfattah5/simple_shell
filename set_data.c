@@ -14,6 +14,7 @@ void set_data(shell_data *data, char **av)
 	data->args = NULL;
 	data->status = 0;
 	data->argc = 0;
+	data->fd = NULL;
 
 	for (i = 0; environ[i] != NULL; ++i)
 		;

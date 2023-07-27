@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <stddef.h>
+#include <fcntl.h>
 extern char **environ;
 
 /**
@@ -27,6 +28,7 @@ typedef struct info
 	int status;
 	int argc;
 	char **_environ;
+	FILE *fd;
 
 } shell_data;
 
