@@ -14,6 +14,7 @@ void (*_is_builtin(char **av))(shell_data * data)
 		{"setenv", _setenv},
 		{"unsetenv", _unsetenv},
 		{"env", _env},
+		{"cd", _cd},
 		{NULL, NULL
 		}};
 

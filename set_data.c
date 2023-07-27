@@ -14,7 +14,8 @@ void set_data(shell_data *data, char **av)
 	data->args = NULL;
 	data->status = 0;
 	data->argc = 0;
-
+	getcwd(data->perv_wd, 1024); 
+	
 	for (i = 0; environ[i] != NULL; ++i)
 		;
 	data->_environ = malloc(sizeof(char *) * (i + 1));

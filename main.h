@@ -27,6 +27,7 @@ typedef struct info
 	int status;
 	int argc;
 	char **_environ;
+	char perv_wd[1024];
 
 } shell_data;
 
@@ -45,6 +46,7 @@ void set_data(shell_data *d, char **av);
 void _myexit(shell_data *);
 void (*_is_builtin(char **av))(shell_data *);
 void _env(shell_data *data);
+void _cd(shell_data *data);
 /* cmd_handlers.c */
 int _getcmd(char **);
 int _execve(shell_data *);
@@ -69,7 +71,11 @@ void _perror(char *s, shell_data *data, int status);
 void free_in_buffers(shell_data *);
 void free_env(shell_data *);
 void free_shell_data(shell_data *);
+/* _cd.c */
 
+void cd_no_arg(shell_data *data);
+void cd_hiffen(shell_data *data);
+void cd_arg(shell_data *data);
 /* _path.c */
 int _pathcheck(shell_data *data);
 int parsePATH(char *path, char ***pathtok);
