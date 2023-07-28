@@ -48,8 +48,8 @@ typedef struct builtin_s
 void set_data(shell_data *d, char **av);
 void _myexit(shell_data *);
 void (*_is_builtin(char **av))(shell_data *);
-void _env(shell_data *data);
 void _cd(shell_data *data);
+
 /* cmd_handlers.c */
 int _getcmd(shell_data *);
 void _execve(shell_data *);
@@ -68,6 +68,7 @@ void _setenv(shell_data *);
 void _unsetenv(shell_data *);
 char *_concat_all(const char *s1, const char *s2);
 int is_found(char ***envp, char *name, char **new_var, int overwrite, int i);
+void _env(shell_data *data);
 
 void _perror(char *s, shell_data *data, int status);
 
