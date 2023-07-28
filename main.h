@@ -90,5 +90,6 @@ void _free_path(char ***pathtok, char **pathdup);
 
 /* _path2.c */
 int is_full_path(char *);
+int found_path(char **env);
 #endif /* MAIN_H */
 

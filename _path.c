@@ -13,13 +13,9 @@ int _pathcheck(shell_data *data)
 
 	if (is_full_path(data->args[0]))
 		return (1);
-	while (env[i])
-	{
-		if (_strlen(env[i]) > 3)
-			if (env[i][0] == 'P' && env[i][3] == 'H')
-				break;
-		i++;
-	}
+	i = found_path(env);
+	if (i == -1)
+		return (0);
 	path_env = env[i];
 	pathdup = strdup(path_env);
 	if (pathdup == NULL)
