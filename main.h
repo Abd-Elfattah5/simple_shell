@@ -46,9 +46,12 @@ typedef struct builtin_s
 } builtin_t;
 
 void set_data(shell_data *d, char **av);
-void _myexit(shell_data *);
 void (*_is_builtin(char **av))(shell_data *);
 void _cd(shell_data *data);
+
+/* _myexit */
+void _myexit(shell_data *);
+void _perror(char *s, shell_data *data, int status);
 
 /* cmd_handlers.c */
 int _getcmd(shell_data *);
@@ -70,7 +73,6 @@ char *_concat_all(const char *s1, const char *s2);
 int is_found(char ***envp, char *name, char **new_var, int overwrite, int i);
 void _env(shell_data *data);
 
-void _perror(char *s, shell_data *data, int status);
 
 /* _free.c */
 void free_in_buffers(shell_data *);
