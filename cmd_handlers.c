@@ -41,13 +41,11 @@ int _getcmd(shell_data *data)
 		*buf = NULL;
 		_perror(NULL, data, data->status);
 	}
-	if (spaces_only(*buf))
+	if (spaces_only(*buf) || remove_comments(buf) == -1)
 	{
-		free(*buf);
+		free_in_buffers(data);
 		return (0);
 	}
-	if (remove_comments(buf) == -1)
-		return (0);
 	return (nread);
 }
 
@@ -139,6 +137,7 @@ int spaces_only(char *s)
 /**
  * remove_comments - remove comments from the input
  * @s: string to remove comments from
+ * Return: int
  */
 int remove_comments(char **s)
 {
