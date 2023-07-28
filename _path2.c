@@ -20,22 +20,33 @@ int is_full_path(char *s)
 
 /**
  * found_path - found the path env
- * @env; env var
+ * @env: env var
  * Return: (-1) on failure - else otherwise
  */
 int found_path(char **env)
 {
-	char *token = NULL;
+	char *token = NULL, *str = NULL;
 	int i = 0;
 
-	while(env[i] != NULL)
+	while (env[i] != NULL)
 	{
-		token = strtok(env[i], "=");
-		token = strtok(NULL, "=");
+		str = strdup(env[i]);
+		if (str == NULL)
+			return (-1);
+
+		token = strtok(str, "=");
 		if (_strcmp(token, "PATH") == 0)
+		{
+			free(str);
+			token = NULL;
+			str = NULL;
 			return (i);
+		}
+		free(str);
 		token = NULL;
+		str = NULL;
 		i++;
 	}
 	return (-1);
 }
+
