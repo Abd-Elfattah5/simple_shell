@@ -46,6 +46,8 @@ int _getcmd(shell_data *data)
 		free(*buf);
 		return (0);
 	}
+	if (remove_comments(buf) == -1)
+		return (0);
 	return (nread);
 }
 
@@ -132,4 +134,36 @@ int spaces_only(char *s)
 			return (0);
 	}
 	return (1);
+}
+
+/**
+ * remove_comments - remove comments from the input
+ * @s: string to remove comments from
+ */
+int remove_comments(char **s)
+{
+	int i = 0, to = 0;
+
+	for (i = 0; (*s)[i] != '\0'; ++i)
+	{
+		if ((*s)[i] == '#')
+		{
+			if (i == 0)
+			{
+				free(*s);
+				*s = NULL;
+				return (-1);
+			}
+		if ((*s)[i - 1] == ' ' || (*s)[i - 1] == '\t' || (*s)[i - 1] == ';')
+		{
+			to = i;
+		}
+		}
+	}
+	if (to)
+	{
+		*s = realloc(*s, to + 1);
+		(*s)[to] = '\0';
+	}
+	return (0);
 }

@@ -58,6 +58,7 @@ int _getcmd(shell_data *);
 void _execve(shell_data *);
 int _parsecmd(shell_data *);
 int spaces_only(char *);
+int remove_comments(char **);
 
 /* string_functions.c */
 int _strcmp(const char *s1, const char *s2);
